@@ -1,0 +1,161 @@
+1. Запускаю тестовый проект
+ Image ipr-hw3-app:latest Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 545B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 359B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim
+#3 DONE 0.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 104B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 94B done
+#5 DONE 0.0s
+
+#6 [1/5] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#6 resolve docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90 0.0s done
+#6 DONE 0.0s
+
+#7 [2/5] WORKDIR /app
+#7 CACHED
+
+#8 [3/5] COPY app/requirements.txt .
+#8 CACHED
+
+#9 [4/5] RUN pip install --no-cache-dir -r requirements.txt     && mkdir -p /data     && chown 10001:10001 /data
+#9 CACHED
+
+#10 [5/5] COPY app/app.py .
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 exporting manifest sha256:1c5f5ea3f8ef54904e799f829e1667eb422b93b9a6d100849be6fbd94bb258dc done
+#11 exporting config sha256:c6adb1258039b241d29b59038e4d06e99417b24c49e7eac189bb14f08f4f3862 done
+#11 exporting attestation manifest sha256:d5915e1b97d97147633df09b5db25fb39a494d97cdaf2a449c7e521fadad6c5d done
+#11 exporting manifest list sha256:60519d400384a087c5fac9887876adf71c4b292d44e39ca1c3c85817516b21d3 done
+#11 naming to docker.io/library/ipr-hw3-app:latest done
+#11 unpacking to docker.io/library/ipr-hw3-app:latest done
+#11 DONE 0.1s
+
+#12 resolving provenance for metadata file
+#12 DONE 0.0s
+ Image ipr-hw3-app:latest Built 
+ Network hw3check17953738381120_default Creating 
+ Network hw3check17953738381120_default Creating 
+ Volume hw3check17953738381120_redis_data Creating 
+ Volume hw3check17953738381120_redis_data Creating 
+ Volume hw3check17953738381120_redis_data Created 
+ Volume hw3check17953738381120_redis_data Created 
+ Network hw3check17953738381120_default Created 
+ Network hw3check17953738381120_default Created 
+ Container hw3check17953738381120-redis-1 Creating 
+ Container hw3check17953738381120-redis-1 Created 
+ Container hw3check17953738381120-app-1 Creating 
+ Container hw3check17953738381120-app-1 Created 
+ Container hw3check17953738381120-redis-1 Starting 
+ Container hw3check17953738381120-redis-1 Started 
+ Container hw3check17953738381120-redis-1 Waiting 
+ Container hw3check17953738381120-redis-1 Healthy 
+ Container hw3check17953738381120-app-1 Starting 
+ Container hw3check17953738381120-app-1 Started 
+count = 0, OK
+1a. Проверяю ограничения контейнера
+UID = 10001, OK
+ReadonlyRootfs=true Memory=268435456 NanoCpus=1000000000, OK
+2. Увеличиваю счётчик 5 раз
+count = 5, OK
+3. Пересоздаю только приложение
+ Container hw3check17953738381120-app-1 Recreate 
+ Container hw3check17953738381120-app-1 Recreated 
+ Container hw3check17953738381120-app-1 Starting 
+ Container hw3check17953738381120-app-1 Started 
+count = 5, OK
+3a. Проверяю сохранность Redis после down/up без -v
+ Container hw3check17953738381120-redis-1 Stopping 
+ Container hw3check17953738381120-app-1 Stopping 
+ Container hw3check17953738381120-redis-1 Stopped 
+ Container hw3check17953738381120-redis-1 Removing 
+ Container hw3check17953738381120-redis-1 Removed 
+ Container hw3check17953738381120-app-1 Stopped 
+ Container hw3check17953738381120-app-1 Removing 
+ Container hw3check17953738381120-app-1 Removed 
+ Network hw3check17953738381120_default Removing 
+ Network hw3check17953738381120_default Removed 
+ Network hw3check17953738381120_default Creating 
+ Network hw3check17953738381120_default Creating 
+ Network hw3check17953738381120_default Created 
+ Network hw3check17953738381120_default Created 
+ Container hw3check17953738381120-redis-1 Creating 
+ Container hw3check17953738381120-redis-1 Created 
+ Container hw3check17953738381120-app-1 Creating 
+ Container hw3check17953738381120-app-1 Created 
+ Container hw3check17953738381120-redis-1 Starting 
+ Container hw3check17953738381120-redis-1 Started 
+ Container hw3check17953738381120-redis-1 Waiting 
+ Container hw3check17953738381120-redis-1 Healthy 
+ Container hw3check17953738381120-app-1 Starting 
+ Container hw3check17953738381120-app-1 Started 
+count = 5, OK
+4. Останавливаю Redis
+ Container hw3check17953738381120-redis-1 Stopping 
+ Container hw3check17953738381120-redis-1 Stopped 
+GET /healthz: 200, OK
+GET /readyz: 503, OK
+POST /increment: 503, OK
+5. Запускаю Redis обратно
+ Container hw3check17953738381120-redis-1 Starting 
+ Container hw3check17953738381120-redis-1 Started 
+count = 5, OK
+count = 6, OK
+6. Делаю резервную копию
+ Container hw3check17953738381120-app-1 Stopping 
+ Container hw3check17953738381120-app-1 Stopped 
+ Container hw3check17953738381120-redis-1 Stopping 
+ Container hw3check17953738381120-redis-1 Stopped 
+Файл: /c/Users/Dimon/Desktop/ipr_hw3_docker/backups/hw3check17953738381120.tar
+ Container hw3check17953738381120-app-1 Stopping 
+ Container hw3check17953738381120-app-1 Stopped 
+ Container hw3check17953738381120-app-1 Removing 
+ Container hw3check17953738381120-app-1 Removed 
+ Container hw3check17953738381120-redis-1 Stopping 
+ Container hw3check17953738381120-redis-1 Stopped 
+ Container hw3check17953738381120-redis-1 Removing 
+ Container hw3check17953738381120-redis-1 Removed 
+ Volume hw3check17953738381120_redis_data Removing 
+ Network hw3check17953738381120_default Removing 
+ Volume hw3check17953738381120_redis_data Removed 
+ Network hw3check17953738381120_default Removed 
+7. Восстанавливаю копию в новом проекте
+ Network hw3check17953738381120restore_default Creating 
+ Volume hw3check17953738381120restore_redis_data Creating 
+ Volume hw3check17953738381120restore_redis_data Creating 
+ Network hw3check17953738381120restore_default Creating 
+ Volume hw3check17953738381120restore_redis_data Created 
+ Volume hw3check17953738381120restore_redis_data Created 
+ Network hw3check17953738381120restore_default Created 
+ Network hw3check17953738381120restore_default Created 
+ Container hw3check17953738381120restore-redis-1 Creating 
+ Container hw3check17953738381120restore-redis-1 Created 
+ Container hw3check17953738381120restore-redis-1 Starting 
+ Container hw3check17953738381120restore-redis-1 Started 
+ Container hw3check17953738381120restore-redis-1 Stopping 
+ Container hw3check17953738381120restore-redis-1 Stopped 
+ Container hw3check17953738381120restore-app-1 Creating 
+ Container hw3check17953738381120restore-app-1 Created 
+ Container hw3check17953738381120restore-redis-1 Starting 
+ Container hw3check17953738381120restore-redis-1 Started 
+ Container hw3check17953738381120restore-redis-1 Waiting 
+ Container hw3check17953738381120restore-redis-1 Healthy 
+ Container hw3check17953738381120restore-app-1 Starting 
+ Container hw3check17953738381120restore-app-1 Started 
+count = 6, OK
+count = 7, OK
+Все проверки прошли успешно

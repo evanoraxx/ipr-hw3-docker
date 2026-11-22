@@ -1,0 +1,60 @@
+$ docker build -t IMAGE .
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 359B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.13-slim
+#2 DONE 1.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 104B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 94B done
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#5 resolve docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90 0.0s done
+#5 DONE 0.0s
+
+#6 [2/5] WORKDIR /app
+#6 CACHED
+
+#7 [3/5] COPY app/requirements.txt .
+#7 CACHED
+
+#8 [4/5] RUN pip install --no-cache-dir -r requirements.txt     && mkdir -p /data     && chown 10001:10001 /data
+#8 CACHED
+
+#9 [5/5] COPY app/app.py .
+#9 CACHED
+
+#10 exporting to image
+#10 exporting layers done
+#10 exporting manifest sha256:80642cfa3f37a23c2cc49e26537b706a8c0579b4cc7c9156f59d508575a0ad84 done
+#10 exporting config sha256:66f48266255e731d30e538378528a99222e7e5d0e76b7d5e0720c7806047082e done
+#10 exporting attestation manifest sha256:82aac912addb033e21f0fee5c0dbbc1cc60481ec2524e36fa38e08e31618cc7d 0.0s done
+#10 exporting manifest list sha256:975e380721721f642ed546f4b91f29da3bdbed18e2278325b5fc6bc819f76689 done
+#10 naming to docker.io/library/hw3-single:hw3evidence1795373774941 done
+#10 unpacking to docker.io/library/hw3-single:hw3evidence1795373774941 done
+#10 DONE 0.1s
+$ docker run -d ... -e GREETING=Hello_from_Docker IMAGE
+f2d07518fd16fef048c082109df8f92c8083141c5a6122c56173df37bb88565c
+$ curl GET /
+{"greeting": "Hello from Docker", "count": 0, "hostname": "f2d07518fd16", "storage": "sqlite"}
+count = 0, OK
+$ curl POST /increment (дважды)
+{"greeting": "Hello from Docker", "count": 1, "hostname": "f2d07518fd16", "storage": "sqlite"}
+{"greeting": "Hello from Docker", "count": 2, "hostname": "f2d07518fd16", "storage": "sqlite"}
+count = 2, OK
+$ docker logs
+2026-11-22 18:56:16,780 listening port=8000 storage=sqlite
+2026-11-22 18:56:16,782 http 172.17.0.1 "GET /readyz HTTP/1.1" 200 -
+2026-11-22 18:56:16,821 http 172.17.0.1 "GET / HTTP/1.1" 200 -
+2026-11-22 18:56:16,871 http 172.17.0.1 "GET / HTTP/1.1" 200 -
+2026-11-22 18:56:16,916 http 172.17.0.1 "POST /increment HTTP/1.1" 200 -
+2026-11-22 18:56:16,959 http 172.17.0.1 "POST /increment HTTP/1.1" 200 -
+2026-11-22 18:56:17,010 http 172.17.0.1 "GET / HTTP/1.1" 200 -

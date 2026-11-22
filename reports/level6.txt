@@ -1,0 +1,87 @@
+$ docker compose -f compose.sqlite.yaml up -d --build
+ Image ipr-hw3-app:latest Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 553B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 359B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim
+#3 DONE 0.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 104B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 94B done
+#5 DONE 0.0s
+
+#6 [1/5] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#6 resolve docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90 0.0s done
+#6 DONE 0.0s
+
+#7 [4/5] RUN pip install --no-cache-dir -r requirements.txt     && mkdir -p /data     && chown 10001:10001 /data
+#7 CACHED
+
+#8 [2/5] WORKDIR /app
+#8 CACHED
+
+#9 [3/5] COPY app/requirements.txt .
+#9 CACHED
+
+#10 [5/5] COPY app/app.py .
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 exporting manifest sha256:a57f6b511d6366c1818247c316f7a6e242b93ae490d1deab34644c8186574917 0.0s done
+#11 exporting config sha256:43f6532414508a124c6f28f79cb0c1c05c7fd2ab5279d391cffb321940334c32 0.0s done
+#11 exporting attestation manifest sha256:f7880b6937546b9bb31eefe516869cd305884ea2e5ea9a3abdf276c541e83e37 0.0s done
+#11 exporting manifest list sha256:e8925e8aa02d7fc51d677285e951c6decf33ba6457a4e102e5f924a08c1176eb 0.0s done
+#11 naming to docker.io/library/ipr-hw3-app:latest
+#11 naming to docker.io/library/ipr-hw3-app:latest done
+#11 unpacking to docker.io/library/ipr-hw3-app:latest done
+#11 DONE 0.1s
+
+#12 resolving provenance for metadata file
+#12 DONE 0.0s
+ Image ipr-hw3-app:latest Built 
+ Network hw3evidence1795373774941sqlite_default Creating 
+ Volume hw3evidence1795373774941sqlite_sqlite_data Creating 
+ Volume hw3evidence1795373774941sqlite_sqlite_data Creating 
+ Network hw3evidence1795373774941sqlite_default Creating 
+ Volume hw3evidence1795373774941sqlite_sqlite_data Created 
+ Volume hw3evidence1795373774941sqlite_sqlite_data Created 
+ Network hw3evidence1795373774941sqlite_default Created 
+ Network hw3evidence1795373774941sqlite_default Created 
+ Container hw3evidence1795373774941sqlite-app-1 Creating 
+ Container hw3evidence1795373774941sqlite-app-1 Created 
+ Container hw3evidence1795373774941sqlite-app-1 Starting 
+ Container hw3evidence1795373774941sqlite-app-1 Started 
+count = 0, OK
+$ curl POST /increment (дважды)
+{"greeting": "Hello, Docker!", "count": 1, "hostname": "387625bde7a2", "storage": "sqlite"}
+{"greeting": "Hello, Docker!", "count": 2, "hostname": "387625bde7a2", "storage": "sqlite"}
+count = 2, OK
+$ docker compose down (без -v)
+ Container hw3evidence1795373774941sqlite-app-1 Stopping 
+ Container hw3evidence1795373774941sqlite-app-1 Stopped 
+ Container hw3evidence1795373774941sqlite-app-1 Removing 
+ Container hw3evidence1795373774941sqlite-app-1 Removed 
+ Network hw3evidence1795373774941sqlite_default Removing 
+ Network hw3evidence1795373774941sqlite_default Removed 
+$ docker compose up -d
+ Network hw3evidence1795373774941sqlite_default Creating 
+ Network hw3evidence1795373774941sqlite_default Creating 
+ Network hw3evidence1795373774941sqlite_default Created 
+ Network hw3evidence1795373774941sqlite_default Created 
+ Container hw3evidence1795373774941sqlite-app-1 Creating 
+ Container hw3evidence1795373774941sqlite-app-1 Created 
+ Container hw3evidence1795373774941sqlite-app-1 Starting 
+ Container hw3evidence1795373774941sqlite-app-1 Started 
+$ curl GET / после пересоздания
+{"greeting": "Hello, Docker!", "count": 2, "hostname": "ec4dbede8b10", "storage": "sqlite"}
+count = 2, OK
